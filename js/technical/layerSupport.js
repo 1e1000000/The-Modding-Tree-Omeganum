@@ -1,12 +1,13 @@
 var layers = {}
 const ExpantaNum = OmegaNum
-const EN = ExpantaNum
-const ExpantaNumZero = new ExpantaNum(0)
-const ExpantaNumOne = new ExpantaNum(1)
-const ExpantaNumNaN = new ExpantaNum(NaN)
-const OmegaNumZero = ExpantaNumZero
-const OmegaNumOne= ExpantaNumOne
-const OmegaNumNaN = ExpantaNumNaN
+const EN = OmegaNum
+const E = OmegaNum
+const ExpantaNumZero = new OmegaNum(0)
+const ExpantaNumOne = new OmegaNum(1)
+const ExpantaNumNaN = new OmegaNum(NaN)
+const OmegaNumZero = new OmegaNum(0)
+const OmegaNumOne = new OmegaNum(1)
+const OmegaNumNaN = new OmegaNum(NaN)
 function layerShown(layer){
     return tmp[layer].layerShown;
 }

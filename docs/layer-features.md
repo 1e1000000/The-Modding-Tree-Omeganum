@@ -10,15 +10,15 @@ You can make almost any value dynamic by using a function in its place, includin
 
 - name: **optional**. used in reset confirmations (and the default infobox title). If absent, it just uses the layer's id.
 
-- startData(): A function to return the default save data for this layer. Add any variables you have to it. Make sure to use `ExpantaNum` values rather than normal numbers.
+- startData(): A function to return the default save data for this layer. Add any variables you have to it. Make sure to use `OmegaNum` values rather than normal numbers.
 
     Standard values:
         - Required:
             - unlocked: a bool determining if this layer is unlocked or not
-            - points: a ExpantaNum, the main currency for the layer
+            - points: a OmegaNum, the main currency for the layer
         - Optional:
-            - total: A ExpantaNum, tracks total amount of main prestige currency. Always tracked, but only shown if you add it here.
-            - best: A ExpantaNum, tracks highest amount of main prestige currency. Always tracked, but only shown if you add it here.
+            - total: A OmegaNum, tracks total amount of main prestige currency. Always tracked, but only shown if you add it here.
+            - best: A OmegaNum, tracks highest amount of main prestige currency. Always tracked, but only shown if you add it here.
             - unlockOrder: used to keep track of relevant layers unlocked before this one.
             - resetTime: A number, time since this layer was last prestiged (or reset by another layer)
 
@@ -95,7 +95,7 @@ You can make almost any value dynamic by using a function in its place, includin
 
 - baseAmount(): A function that gets the current value of the base resource.
 
-- requires: A ExpantaNum, the amount of the base needed to gain 1 of the prestige currency. Also the amount required to unlock the layer. You can instead make this a function, to make it harder if another layer was unlocked first (based on unlockOrder).
+- requires: A OmegaNum, the amount of the base needed to gain 1 of the prestige currency. Also the amount required to unlock the layer. You can instead make this a function, to make it harder if another layer was unlocked first (based on unlockOrder).
 
 - exponent: Used as described above.
 

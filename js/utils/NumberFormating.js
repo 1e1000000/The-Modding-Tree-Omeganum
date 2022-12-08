@@ -26,13 +26,13 @@ function regularFormat(num, precision) {
 }
 
 function fixValue(x, y = 0) {
-    return x || new ExpantaNum(y)
+    return x || new OmegaNum(y)
 }
 
 function sumValues(x) {
     x = Object.values(x)
-    if (!x[0]) return new ExpantaNum(0)
-    return x.reduce((a, b) => ExpantaNum.add(a, b))
+    if (!x[0]) return new OmegaNum(0)
+    return x.reduce((a, b) => OmegaNum.add(a, b))
 }
 function egg(n) {
   if(n == undefined) return 0
@@ -40,7 +40,7 @@ function egg(n) {
 }
 function format(decimal, precision = 2, small=false) {
     small = small || modInfo.allowSmall
-    decimal = new ExpantaNum(decimal)
+    decimal = new OmegaNum(decimal)
     let fmt = decimal.toString()
     if(decimal.eq(0))return "0"
     if(decimal.lt("0.0001")){return format(decimal.rec(), precision) + "⁻¹"}
@@ -151,10 +151,10 @@ function formatTime(s) {
 }
 
 function toPlaces(x, precision, maxAccepted) {
-    x = new ExpantaNum(x)
+    x = new OmegaNum(x)
     let result = x.toString(precision)
-    if (new ExpantaNum(result).gte(maxAccepted)) {
-        result = new ExpantaNum(maxAccepted - Math.pow(0.1, precision)).toString(precision)
+    if (new OmegaNum(result).gte(maxAccepted)) {
+        result = new OmegaNum(maxAccepted - Math.pow(0.1, precision)).toString(precision)
     }
     return result
 }

@@ -1,11 +1,11 @@
 let modInfo = {
 	name: "The Modding Tree",
-	id: "mymod",
+	id: "mymod-omeganum",
 	author: "",
 	pointsName: "points",
 	discordName: "",
 	discordLink: "",
-	initialStartPoints: new ExpantaNum (10), // Used for hard resets and new players
+	initialStartPoints: new OmegaNum (10), // Used for hard resets and new players
 	
 	offlineLimit: 1,  // In hours
 }
@@ -28,7 +28,7 @@ let winText = `Congratulations! You have reached the end and beaten this game, b
 var doNotCallTheseFunctionsEveryTick = ["blowUpEverything"]
 
 function getStartPoints(){
-    return new ExpantaNum(modInfo.initialStartPoints)
+    return new OmegaNum(modInfo.initialStartPoints)
 }
 
 // Determines if it should show points/sec
@@ -39,9 +39,9 @@ function canGenPoints(){
 // Calculate points/sec!
 function getPointGen() {
 	if(!canGenPoints())
-		return new ExpantaNum(0)
+		return new OmegaNum(0)
 
-	let gain = new ExpantaNum(1)
+	let gain = new OmegaNum(1)
 	return gain
 }
 

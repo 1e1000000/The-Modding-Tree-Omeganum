@@ -2,8 +2,8 @@
 function save() {
 	NaNcheck(player)
 	if (NaNalert) return
-	localStorage.setItem(modInfo.id, btoa(unescape(encodeURIComponent(JSON.stringify(player)))));
-	localStorage.setItem(modInfo.id+"_options", btoa(unescape(encodeURIComponent(JSON.stringify(options)))));
+	localStorage.setItem(modInfo.id+"-omeganum", btoa(unescape(encodeURIComponent(JSON.stringify(player)))));
+	localStorage.setItem(modInfo.id+"-omeganum"+"_options", btoa(unescape(encodeURIComponent(JSON.stringify(options)))));
   //ok it saved fine so the problem must be when loading
 }
 function startPlayerBase() {
@@ -12,7 +12,7 @@ function startPlayerBase() {
 		navTab: (layoutInfo.showTree ? layoutInfo.startNavTab : "none"),
 		time: Date.now(),
 		notify: {},
-		versionType: modInfo.id,
+		versionType: modInfo.id+"-omeganum",
 		version: VERSION.num,
 		beta: VERSION.beta,
 		timePlayed: 0,
@@ -189,7 +189,7 @@ function fixData(defaultData, newData) {
 	}
 }
 function load() {
-	let get = localStorage.getItem(modInfo.id);
+	let get = localStorage.getItem(modInfo.id+"-omeganum");
 	if (get === null || get === undefined) {
 		player = getStartPlayer();
 		options = getStartOptions();
@@ -218,7 +218,7 @@ function load() {
 	loadVue();
 }
 function loadOptions() {
-	let get2 = localStorage.getItem(modInfo.id+"_options");
+	let get2 = localStorage.getItem(modInfo.id+"-omeganum"+"_options");
 	if (get2) 
 		options = Object.assign(getStartOptions(), JSON.parse(decodeURIComponent(escape(atob(get2)))));
 	else 
@@ -273,10 +273,10 @@ function importSave(imported = undefined, forced = false) {
 		imported = prompt("Paste your save here");
 	try {
 		tempPlr = Object.assign(getStartPlayer(), JSON.parse(atob(imported)));
-		if (tempPlr.versionType != modInfo.id && !forced && !confirm("This save appears to be for a different mod! Are you sure you want to import?")) // Wrong save (use "Forced" to force it to accept.)
+		if (tempPlr.versionType != modInfo.id+"-omeganum" && !forced && !confirm("This save appears to be for a different mod! Are you sure you want to import?")) // Wrong save (use "Forced" to force it to accept.)
 			return;
 		player = tempPlr;
-		player.versionType = modInfo.id;
+		player.versionType = modInfo.id+"-omeganum";
 		fixSave();
 		versionCheck();
 		save();
@@ -289,12 +289,12 @@ function versionCheck() {
 	let setVersion = true;
 
 	if (player.versionType === undefined || player.version === undefined) {
-		player.versionType = modInfo.id;
+		player.versionType = modInfo.id+"-omeganum";
 		player.version = 0;
 	}
 
 	if (setVersion) {
-		if (player.versionType == modInfo.id && VERSION.num > player.version) {
+		if (player.versionType == modInfo.id+"-omeganum" && VERSION.num > player.version) {
 			player.keepGoing = false;
 			if (fixOldSave)
 				fixOldSave(player.version);

@@ -130,6 +130,8 @@ var systemComponents = {
             <br>
             Made by {{modInfo.author}}	
         </span>
+		<br>
+        TMT OmegaNum port <b>{{EN_VERSION.enNum}}</b> by upvoid, modified by 1e1000000<br>(WARNING: THIS IS NOT AN OFFICIAL TMT MOD, ONLY USE IF YOUR POINTS COULD/WILL EXCEED F1.798e308 IN THE GAME)<br>
         <br>
         The Modding Tree <a v-bind:href="'https://github.com/Acamaeda/The-Modding-Tree/blob/master/changelog.md'" target="_blank" class="link" v-bind:style = "{'font-size': '14px', 'display': 'inline'}" >{{TMT_VERSION.tmtNum}}</a> by Acamaeda
         <br>

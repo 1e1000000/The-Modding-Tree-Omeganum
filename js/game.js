@@ -4,8 +4,8 @@ var scrolled = false;
 
 // Don't change this
 const EN_VERSION = {
-  enNum: "1.1.1",
-  enName: "Format++"
+  enNum: "1.2",
+  enName: "Major Bug Fixes"
   
 }
 const TMT_VERSION = {

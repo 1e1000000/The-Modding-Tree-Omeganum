@@ -8,6 +8,9 @@ const ExpantaNumNaN = new OmegaNum(NaN)
 const OmegaNumZero = new OmegaNum(0)
 const OmegaNumOne = new OmegaNum(1)
 const OmegaNumNaN = new OmegaNum(NaN)
+
+const defaultGlow = "#ff0000"
+
 function layerShown(layer){
     return tmp[layer].layerShown;
 }
@@ -191,7 +194,7 @@ function setupLayer(layer){
     if(layers[layer].displayRow === undefined) layers[layer].displayRow = layers[layer].row
     if(layers[layer].name === undefined) layers[layer].name = layer
     if(layers[layer].layerShown === undefined) layers[layer].layerShown = true
-    if(layers[layer].glowColor === undefined) layers[layer].glowColor = "#ff0000"
+    if(layers[layer].glowColor === undefined) layers[layer].glowColor = defaultGlow
 
     let row = layers[layer].row
 

@@ -3,10 +3,11 @@ let modInfo = {
 	id: "mymod",
 	author: "",
 	pointsName: "points",
+	modFiles: ["layers.js", "tree.js"],
+
 	discordName: "",
 	discordLink: "",
 	initialStartPoints: new OmegaNum (10), // Used for hard resets and new players
-	
 	offlineLimit: 1,  // In hours
 }
 

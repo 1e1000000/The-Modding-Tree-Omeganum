@@ -1,6 +1,5 @@
 var player;
 var needCanvasUpdate = true;
-var gameEnded = false;
 var scrolled = false;
 
 // Don't change this
@@ -110,7 +109,7 @@ function shouldNotify(layer){
 	for (family in tmp[layer].microtabs) {
 		for (subtab in tmp[layer].microtabs[family]){
 			if (subtabShouldNotify(layer, family, subtab)) {
-				tmp[layer].trueGlowColor = tmp[layer].microtabs[family][subtab].glowColor
+				tmp[layer].trueGlowColor = tmp[layer].microtabs[family][subtab].glowColor || defaultGlow
 				return true
 			}
 		}
@@ -136,11 +135,11 @@ function rowReset(row, layer) {
 	for (lr in ROW_LAYERS[row]){
 		if(layers[lr].doReset) {
 
-			player[lr].activeChallenge = null // Exit challenges on any row reset on an equal or higher row
+			if (!isNaN(row)) player[lr].activeChallenge = null // Exit challenges on any row reset on an equal or higher row
 			run(layers[lr].doReset, layers[lr], layer)
 		}
 		else
-			if(tmp[layer].row > tmp[lr].row && row !== "side" && !isNaN(row)) layerDataReset(lr)
+			if(tmp[layer].row > tmp[lr].row && !isNaN(row)) layerDataReset(lr)
 	}
 }
 
@@ -186,20 +185,16 @@ function generatePoints(layer, diff) {
 	addPoints(layer, tmp[layer].resetGain.times(diff))
 }
 
-var prevOnReset
-
 function doReset(layer, force=false) {
 	if (tmp[layer].type == "none") return
 	let row = tmp[layer].row
 	if (!force) {
+		if (tmp[layer].canReset === false) return;
 		if (tmp[layer].baseAmount.lt(tmp[layer].requires)) return;
 		let gain = tmp[layer].resetGain
 		if (tmp[layer].type=="static") {
 			if (tmp[layer].baseAmount.lt(tmp[layer].nextAt)) return;
 			gain =(tmp[layer].canBuyMax ? gain : 1)
-		} 
-		if (tmp[layer].type=="custom") {
-			if (!tmp[layer].canReset) return;
 		} 
 
 		if (layers[layer].onPrestige)
@@ -220,22 +215,21 @@ function doReset(layer, force=false) {
 			}
 		}
 	
-		tmp[layer].baseAmount = OmegaNumZero // quick fix
 	}
 
 	if (run(layers[layer].resetsNothing, layers[layer])) return
-
+	tmp[layer].baseAmount = OmegaNumZero // quick fix
 
 	for (layerResetting in layers) {
 		if (row >= layers[layerResetting].row && (!force || layerResetting != layer)) completeChallenge(layerResetting)
 	}
 
-	prevOnReset = {...player} 
 	player.points = (row == 0 ? OmegaNumZero : getStartPoints())
 
 	for (let x = row; x >= 0; x--) rowReset(x, layer)
-	rowReset("side", layer)
-	prevOnReset = undefined
+	for (r in OTHER_LAYERS){
+		rowReset(r, layer)
+	}
 
 	player[layer].resetTime = 0
 
@@ -261,7 +255,7 @@ function resetRow(row) {
 
 function startChallenge(layer, x) {
 	let enter = false
-	if (!player[layer].unlocked) return
+	if (!player[layer].unlocked || !tmp[layer].challenges[x].unlocked) return
 	if (player[layer].activeChallenge == x) {
 		completeChallenge(layer, x)
 		player[layer].activeChallenge = null
@@ -334,15 +328,15 @@ function autobuyUpgrades(layer){
 }
 
 function gameLoop(diff) {
-	if (isEndgame() || gameEnded){
-		gameEnded = 1
+	if (isEndgame() || tmp.gameEnded){
+		tmp.gameEnded = 1
 		clearParticles()
 	}
 
 	if (isNaN(diff) || diff < 0) diff = 0
-	if (gameEnded && !player.keepGoing) {
+	if (tmp.gameEnded && !player.keepGoing) {
 		diff = 0
-		//player.tab = "gameEnded"
+		//player.tab = "tmp.gameEnded"
 		clearParticles()
 	}
 
@@ -398,10 +392,11 @@ function gameLoop(diff) {
 
 }
 
-function hardReset() {
+function hardReset(resetOptions) {
 	if (!confirm("Are you sure you want to do this? You will lose all your progress!")) return
 	player = null
-	save();
+	if(resetOptions) options = null
+	save(true);
 	window.location.reload();
 }
 
@@ -410,7 +405,7 @@ var ticking = false
 var interval = setInterval(function() {
 	if (player===undefined||tmp===undefined) return;
 	if (ticking) return;
-	if (gameEnded&&!player.keepGoing) return;
+	if (tmp.gameEnded&&!player.keepGoing) return;
 	ticking = true
 	let now = Date.now()
 	let diff = (now - player.time) / 1e3

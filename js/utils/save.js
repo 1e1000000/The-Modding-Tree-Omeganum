@@ -1,7 +1,7 @@
 // ************ Save stuff ************
-function save() {
+function save(force) {
 	NaNcheck(player)
-	if (NaNalert) return
+	if (NaNalert && !force) return
 	localStorage.setItem(modInfo.id+"-omeganum", btoa(unescape(encodeURIComponent(JSON.stringify(player)))));
 	localStorage.setItem(modInfo.id+"-omeganum"+"_options", btoa(unescape(encodeURIComponent(JSON.stringify(options)))));
   //ok it saved fine so the problem must be when loading
@@ -223,7 +223,7 @@ function loadOptions() {
 		options = Object.assign(getStartOptions(), JSON.parse(decodeURIComponent(escape(atob(get2)))));
 	else 
 		options = getStartOptions()
-
+	if (themes.indexOf(options.theme) < 0) options.theme = "default"
 
 }
 function setupModInfo() {
@@ -244,9 +244,9 @@ function NaNcheck(data) {
 		
 		else if (data[item] !== data[item] || checkOmegaNumNaN(data[item])) {
 			if (!NaNalert) {
-				confirm("Invalid value found in player, named '" + item + "'. Please let the creator of this mod know! You can refresh the page, and you will be un-NaNed.")
 				clearInterval(interval);
 				NaNalert = true;
+				alert("Invalid value found in player, named '" + item + "'. Please let the creator of this mod know! You can refresh the page, and you will be un-NaNed.")
 				return
 			}
 		}
@@ -258,6 +258,7 @@ function NaNcheck(data) {
 	}
 }
 function exportSave() {
+	//if (NaNalert) return
 	let str = btoa(JSON.stringify(player));
 
 	const el = document.createElement("textarea");
@@ -279,6 +280,7 @@ function importSave(imported = undefined, forced = false) {
 		player.versionType = modInfo.id+"-omeganum";
 		fixSave();
 		versionCheck();
+		NaNcheck(save)
 		save();
 		window.location.reload();
 	} catch (e) {
@@ -307,8 +309,14 @@ function versionCheck() {
 var saveInterval = setInterval(function () {
 	if (player === undefined)
 		return;
-	if (gameEnded && !player.keepGoing)
+	if (tmp.gameEnded && !player.keepGoing)
 		return;
 	if (options.autosave)
 		save();
 }, 5000);
+
+window.onbeforeunload = () => {
+    if (options.autosave) {
+        save();
+    }
+};

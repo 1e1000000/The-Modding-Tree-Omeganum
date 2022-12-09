@@ -27,6 +27,7 @@ function setupTemp() {
 	tmp.pointGen = {}
 	tmp.displayThings = []
 	tmp.scrolled = 0
+	tmp.gameEnded = false
 	funcs = {}
 	
 	setupTempData(layers, tmp, funcs)
@@ -99,7 +100,7 @@ function updateTemp() {
 		tmp[layer].trueGlowColor = tmp[layer].glowColor
 		tmp[layer].notify = shouldNotify(layer)
 		tmp[layer].prestigeNotify = prestigeNotify(layer)
-
+		if (tmp[layer].passiveGeneration === true) tmp[layer].passiveGeneration = 1 // new Decimal(true) = decimalZero
 	}
 
 	tmp.pointGen = getPointGen()

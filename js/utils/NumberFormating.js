@@ -94,9 +94,9 @@ function format(num, precision=2, small=false) {
     num = new OmegaNum(num)
     let array = num.array
     if (num.abs().lt(1e-308)) return (0).toFixed(precision)
-    if (num.sign < 0) return "-" + format(num.neg(), precision)
+    if (num.sign < 0) return "-" + format(num.neg(), precision, small)
     if (num.isInfinite()) return "Infinity"
-    if (num.lt("0.0001")) { return format(num.rec(), precision) + "⁻¹" }
+    if (num.lt(small ? 1e-4 : 1e-2)) { return "1/" + format(num.rec(), precision)}
     else if (num.lt(1)) return regularFormat(num, precision + (small ? 2 : 0))
     else if (num.lt(1000)) return regularFormat(num, precision)
     else if (num.lt(1e9)) return commaFormat(num)
@@ -108,7 +108,7 @@ function format(num, precision=2, small=false) {
         }
         let m = 10**(array[0]-Math.floor(array[0]))
         let e = Math.floor(array[0])
-        let p = array[0] < 1000 ? precision2 : 0
+        let p = array[0] < 1e6 ? precision2 : 0
         return "e".repeat(rep) + regularFormat(m, p) + "e" + commaFormat(e)
     }
     else if (num.lt("10^^1000000")) { // 1F5 ~ F1,000,000

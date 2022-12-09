@@ -12,9 +12,12 @@ function respecBuyables(layer) {
 function canAffordUpgrade(layer, id) {
 	let upg = tmp[layer].upgrades[id]
 	if(tmp[layer].deactivated) return false
-	if (tmp[layer].upgrades[id].canAfford !== undefined) return tmp[layer].upgrades[id].canAfford
+	if (tmp[layer].upgrades[id].canAfford === false) return false
 	let cost = tmp[layer].upgrades[id].cost
-	return canAffordPurchase(layer, upg, cost)
+	if (cost !== undefined) 
+		return canAffordPurchase(layer, upg, cost)
+
+	return true
 }
 
 function canBuyBuyable(layer, id) {
@@ -220,7 +223,7 @@ function subtabShouldNotify(layer, family, id) {
 	let subtab = {}
 	if (family == "mainTabs") subtab = tmp[layer].tabFormat[id]
 	else subtab = tmp[layer].microtabs[family][id]
-
+	if (!subtab.unlocked) return false
 	if (subtab.embedLayer) return tmp[subtab.embedLayer].notify
 	else return subtab.shouldNotify
 }
@@ -254,6 +257,7 @@ function toNumber(x) {
 }
 
 function updateMilestones(layer) {
+	if (tmp[layer].deactivated) return
 	for (id in layers[layer].milestones) {
 		if (!(hasMilestone(layer, id)) && layers[layer].milestones[id].done()) {
 			player[layer].milestones.push(id)
@@ -265,6 +269,7 @@ function updateMilestones(layer) {
 }
 
 function updateAchievements(layer) {
+	if (tmp[layer].deactivated) return
 	for (id in layers[layer].achievements) {
 		if (isPlainObject(layers[layer].achievements[id]) && !(hasAchievement(layer, id)) && layers[layer].achievements[id].done()) {
 			player[layer].achievements.push(id)
@@ -303,7 +308,7 @@ ctrlDown = false
 
 document.onkeydown = function (e) {
 	if (player === undefined) return;
-	if (gameEnded && !player.keepGoing) return;
+	if (tmp.gameEnded && !player.keepGoing) return;
 	shiftDown = e.shiftKey
 	ctrlDown = e.ctrlKey
 	let key = e.key

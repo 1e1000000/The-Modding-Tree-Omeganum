@@ -186,11 +186,14 @@ function setupLayer(layer){
     if(layers[layer].unlockOrder === undefined) layers[layer].unlockOrder = []
     if(layers[layer].gainMult === undefined) layers[layer].gainMult = OmegaNumOne
     if(layers[layer].gainExp === undefined) layers[layer].gainExp = OmegaNumOne
+    if(layers[layer].gainExpExp === undefined) layers[layer].gainExpExp = OmegaNumOne
     if(layers[layer].directMult === undefined) layers[layer].directMult = OmegaNumOne
     if(layers[layer].type === undefined) layers[layer].type = "none"
     if(layers[layer].base === undefined || layers[layer].base <= 1) layers[layer].base = 2
-    if(layers[layer].softcap === undefined) layers[layer].softcap = new OmegaNum("e1e7")
+    if(layers[layer].softcap === undefined) layers[layer].softcap = new OmegaNum(1/0)
     if(layers[layer].softcapPower === undefined) layers[layer].softcapPower = new OmegaNum("0.5")
+    if(layers[layer].expSoftcap === undefined) layers[layer].expSoftcap = new OmegaNum(1/0)
+    if(layers[layer].expSoftcapPower === undefined) layers[layer].expSoftcapPower = new OmegaNum("0.5")
     if(layers[layer].displayRow === undefined) layers[layer].displayRow = layers[layer].row
     if(layers[layer].name === undefined) layers[layer].name = layer
     if(layers[layer].layerShown === undefined) layers[layer].layerShown = true
